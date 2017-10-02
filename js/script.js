@@ -13,6 +13,40 @@ const studentList = document.querySelector('.student-list'); //Ul with students
 studentList.parentNode.removeChild(studentList); //Hide student list
 //Show 10 students per "page"
 
+/* CREATE ANY ELEMENT
+*/
+//const createElement = (elementName, property, value) =>{
+// const createElement = (elementName) =>{
+//   const element = document.createElement(elementName);
+//   //element[property] = value;
+//   return element;
+// };
+
+//Append element
+// function appendElement(parent, element){
+//   parent.appendChild(element);
+// };
+
+//Pagination
+const pagination = () => {
+  const numberOfPages = Math.ceil(students.length/10); //Rounds up to closest int
+
+  const paginationDiv = document.createElement('div'); //class pagination
+  paginationDiv.className = 'pagination';
+  //const ul = document.createElement('ul');
+  const ul = document.createElement('ul');
+
+  for (let i = 0; i < numberOfPages; i++){
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = "#";
+    a.text = i+1;
+    li.appendChild(a);
+    ul.appendChild(li);
+  };
+  paginationDiv.appendChild(ul);
+  body.appendChild(paginationDiv); //Now in body. Have to move into page-div
+};
 
 /* Look at the HTML in the example-meets.html on lines 119-137
 ** -- this is an example of the markup you'll need to add dynamically to
