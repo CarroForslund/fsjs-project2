@@ -6,9 +6,10 @@ window.onload = () => {
 }
 
 const body = document.body;
-const pageDiv = body.firstChild;//document.getElementsByClassName('page')
+const pageDiv = document.getElementsByClassName('page')[0];
+console.log(pageDiv);
 const students = document.querySelectorAll('.student-item'); //Array of students
-const studentList = document.querySelector('.student-list'); //Ul with students
+const studentList = document.querySelector('.student-list'); //(ul)
 
 studentList.parentNode.removeChild(studentList); //Hide student list
 //Show 10 students per "page"
@@ -30,38 +31,32 @@ studentList.parentNode.removeChild(studentList); //Hide student list
 //Pagination
 const pagination = () => {
   const numberOfPages = Math.ceil(students.length/10); //Rounds up to closest int
-
   const paginationDiv = document.createElement('div'); //class pagination
   paginationDiv.className = 'pagination';
   //const ul = document.createElement('ul');
   const ul = document.createElement('ul');
 
-  for (let i = 0; i < numberOfPages; i++){
+  for (let i = 1; i < numberOfPages+1; i++){
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = "#";
-    a.text = i+1;
+    a.text = i;
     li.appendChild(a);
     ul.appendChild(li);
   };
+
   paginationDiv.appendChild(ul);
-  body.appendChild(paginationDiv); //Now in body. Have to move into page-div
+  pageDiv.appendChild(paginationDiv); //Now in body. Have to move into page-div
 };
-
-/* Look at the HTML in the example-meets.html on lines 119-137
-** -- this is an example of the markup you'll need to add dynamically to
-** the index.html page to create pagination links.
-*/
-
-/* Since only 10 students should be shown at a time, your programming needs to
-** calculate the number of pages needed and add the appropriate number of links
-** to the bottom of the page.
-*/
 
 /* When a user clicks on “2” in the pagination, students 11 through 20 are shown.
 ** When a user clicks “3”, students 21 through 30 are shown. And so on. When “6”
 ** is clicked 51 through 55 should be shown.
 */
+// a.addEventListener('click', (e) => {
+//   //show students with number from i*10-9 to i*10 (or less if last page)
+//
+// });
 
 /* Your program should work for any number of students.
 ** There are 54 students in index.html, but you can test your code by adding
