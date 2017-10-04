@@ -5,6 +5,7 @@ const pageDiv = document.getElementsByClassName('page')[0]; //div with class "pa
 const pageHeader = document.getElementsByClassName('page-header')[0];
 const studentsArray = document.querySelectorAll('.student-item'); //Array of students (li)
 const students = []; //sorted student array
+const searchResult = [];
 
 //clean up studentList and save to students
 function sortStudentList () {
@@ -58,6 +59,14 @@ function searchBox(){
 
 function searchStudents(input){
   console.log(input);
+
+  for (let i = 0; i < students.length; i++){
+    if (students[i].name.includes(input) || students[i].email.includes(input)){
+      searchResult.push(students[i]);
+    };
+  };
+  console.log(searchResult);
+
 };
 
 function showStudents(pageNumber){
