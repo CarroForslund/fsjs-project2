@@ -124,26 +124,6 @@ function pagination(pageNumber) {
 sortStudentList();
 showStudents(1);
 
-/* When a user clicks on “2” in the pagination, students 11 through 20 are shown.
-** When a user clicks “3”, students 21 through 30 are shown. And so on. When “6”
-** is clicked 51 through 55 should be shown.
-*/
-// const paginationLinks
-// pageDiv.addEventListener('a', (e) => {
-//   //show students with number from i*10-9 to i*10 (or less if last page)
-//   console.log('hello event');
-//   for (let i = 0; i < students.length; i++){
-//     console.log(student[i]);
-//   };
-// });
-
-/* Your program should work for any number of students.
-** There are 54 students in index.html, but you can test your code by adding
-** the JavaScript file your write to the other lists of students we’ve provided
-** in the student-list-examples folder.
-*/
-
-
 /* CREATE ANY ELEMENT
 */
 //const createElement = (elementName, property, value) =>{
