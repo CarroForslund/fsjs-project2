@@ -2,6 +2,7 @@
 ** your program should hide all but the first 10 students in the list.
 */
 const pageDiv = document.getElementsByClassName('page')[0]; //div with class "page"
+const pageHeader = document.getElementsByClassName('page-header')[0];
 const studentsArray = document.querySelectorAll('.student-item'); //Array of students (li)
 const students = []; //sorted student array
 
@@ -23,15 +24,28 @@ function sortStudentList () {
   };
 };
 
-function resetPaginationDiv(){
-  paginationDiv.parentNode.removeChild(paginationDiv);
+function searchBox(){
+  const div = document.createElement('div');
+  div.className = 'student-search';
+  pageHeader.appendChild(div);
+
+  const input = document.createElement('input');
+  input.placeholder = 'Search for students...';
+  div.appendChild(input);
+
+  const button = document.createElement('button');
+  button.innerHTML = 'Search';
+  div.appendChild(button);
+
 };
+// <div class="student-search">
+//   <input placeholder="Search for students...">
+//   <button>Search</button>
+// </div>
 
 function showStudents(pageNumber){
   const studentList = document.querySelector('.student-list');
   studentList.parentNode.removeChild(studentList); //Hide HTML list from index
-
-
 
   //Display students
   const ul = document.createElement('ul');
@@ -79,9 +93,7 @@ function showStudents(pageNumber){
     joinedDiv.appendChild(dateSpan);
 
   };
-
   pagination(pageNumber);
-
 
 };
 
@@ -102,7 +114,7 @@ function pagination(pageNumber) {
       a.className = 'active';
     }
     a.addEventListener('click', function(){
-      resetPaginationDiv();
+      paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
       showStudents(i);
     });
     li.appendChild(a);
@@ -121,6 +133,7 @@ function pagination(pageNumber) {
 
 };
 
+searchBox();
 sortStudentList();
 showStudents(1);
 
