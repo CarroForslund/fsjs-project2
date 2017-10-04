@@ -46,6 +46,7 @@ function sortStudentList () {
   };
 };
 
+//Print student in intervals of 10 depending of which page number is clicked
 function printStudentList(){
   const ul = document.createElement('ul');
   ul.setAttribute('class', 'student-list');
@@ -100,12 +101,15 @@ function pagination() {
     const a = document.createElement('a');
     a.href = '#';
     a.text = i;
+    if (i === 1){
+      a.className = 'active';
+    }
     li.appendChild(a);
     ul.appendChild(li);
   };
 
   paginationDiv.appendChild(ul);
-  pageDiv.appendChild(paginationDiv); //Now in body. Have to move into page-div
+  pageDiv.appendChild(paginationDiv);
 };
 
 /* When a user clicks on “2” in the pagination, students 11 through 20 are shown.
