@@ -28,27 +28,6 @@ studentList.parentNode.removeChild(studentList); //Hide student list
 //   parent.appendChild(element);
 // };
 
-//Pagination
-function pagination() {
-  const numberOfPages = Math.ceil(studentsArray.length/10); //Rounds up to closest int
-  const paginationDiv = document.createElement('div'); //class pagination
-  paginationDiv.className = 'pagination';
-  //const ul = document.createElement('ul');
-  const ul = document.createElement('ul');
-
-  for (let i = 1; i < numberOfPages+1; i++){
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = '#';
-    a.text = i;
-    li.appendChild(a);
-    ul.appendChild(li);
-  };
-
-  paginationDiv.appendChild(ul);
-  pageDiv.appendChild(paginationDiv); //Now in body. Have to move into page-div
-};
-
 //clean up studentList and save to students
 function sortStudentList () {
   for (let i = 0; i < studentsArray.length; i++){
@@ -72,11 +51,11 @@ function printStudentList(){
   ul.setAttribute('class', 'student-list');
   pageDiv.appendChild(ul);
 
-  //for (let i = 0; i < students.length; i++){
-  for (let i = 0; i < 10; i++){
+  for (let i = 0; i < students.length; i++){
+  //for (let i = 0; i < 10; i++){
 
     const li = document.createElement('li');
-    li.setAttribute('class', 'student-item cf');
+    li.className = 'student-item cf';
     ul.appendChild(li);
 
     const studentDiv = document.createElement('div');
@@ -84,8 +63,8 @@ function printStudentList(){
     li.appendChild(studentDiv);
 
     const img = document.createElement('img');
-    img.setAttribute('class', 'avatar')
-    img.setAttribute('src', students[i].avatar)
+    img.className = 'avatar';
+    img.src = students[i].avatar;
     studentDiv.appendChild(img);
 
     const nameH3 = document.createElement('h3');
@@ -93,40 +72,48 @@ function printStudentList(){
     studentDiv.appendChild(nameH3);
 
     const emailSpan = document.createElement('span');
-    emailSpan.setAttribute('class', 'email');
+    emailSpan.className = 'email';
     emailSpan.innerHTML = students[i].email;
     studentDiv.appendChild(emailSpan);
 
     const joinedDiv = document.createElement('div');
-    joinedDiv.setAttribute('class', 'joined-details');
+    joinedDiv.className = 'joined-details';
     li.appendChild(joinedDiv);
 
     const dateSpan = document.createElement('span');
-    dateSpan.setAttribute('class', 'date');
+    dateSpan.className = 'date';
     dateSpan.innerHTML = students[i].joined;
     joinedDiv.appendChild(dateSpan);
   };
 };
 
-// <ul class="student-list">
-//   <li class="student-item cf">
-//       <div class="student-details">
-//           <img class="avatar" src="https://randomuser.me/api/portraits/thumb/women/67.jpg">
-//           <h3>iboya vat</h3>
-//           <span class="email">iboya.vat@example.com</span>
-//       </div>
-//       <div class="joined-details">
-//              <span class="date">Joined 07/15/15</span>
-//      </div>
-//   </li>
+//Pagination
+function pagination() {
+  const numberOfPages = Math.ceil(studentsArray.length/10); //Rounds up to closest int
+  const paginationDiv = document.createElement('div'); //class pagination
+  paginationDiv.className = 'pagination';
+  //const ul = document.createElement('ul');
+  const ul = document.createElement('ul');
+
+  for (let i = 1; i < numberOfPages+1; i++){
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = '#';
+    a.text = i;
+    li.appendChild(a);
+    ul.appendChild(li);
+  };
+
+  paginationDiv.appendChild(ul);
+  pageDiv.appendChild(paginationDiv); //Now in body. Have to move into page-div
+};
 
 /* When a user clicks on “2” in the pagination, students 11 through 20 are shown.
 ** When a user clicks “3”, students 21 through 30 are shown. And so on. When “6”
 ** is clicked 51 through 55 should be shown.
 */
-
-// };
-// a.addEventListener('click', (e) => {
+// const paginationLinks
+// pageDiv.addEventListener('a', (e) => {
 //   //show students with number from i*10-9 to i*10 (or less if last page)
 //   console.log('hello event');
 //   for (let i = 0; i < students.length; i++){
