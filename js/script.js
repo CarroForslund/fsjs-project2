@@ -31,17 +31,34 @@ function searchBox(){
 
   const input = document.createElement('input');
   input.placeholder = 'Search for students...';
+  input.addEventListener('keypress', function (e) {
+    const input = document.querySelector('input');
+    const value = input.value;
+    var key = e.which || e.keyCode;
+    if (key === 13) { // 13 is enter
+      console.log('enter search');
+      input.value = '';
+      searchStudents(value);
+    };
+  });
   div.appendChild(input);
 
   const button = document.createElement('button');
   button.innerHTML = 'Search';
+  button.addEventListener('click', function(){
+    console.log('button search');
+    const input = document.querySelector('input');
+    const value = input.value;
+    input.value = '';
+    searchStudents(value);
+  });
   div.appendChild(button);
 
 };
-// <div class="student-search">
-//   <input placeholder="Search for students...">
-//   <button>Search</button>
-// </div>
+
+function searchStudents(input){
+  console.log(input);
+};
 
 function showStudents(pageNumber){
   const studentList = document.querySelector('.student-list');
@@ -124,12 +141,6 @@ function pagination(pageNumber) {
 
   paginationDiv.appendChild(ul);
   pageDiv.appendChild(paginationDiv);
-
-  // const paginationLinks = document.getElementsByTagName('a');
-  // console.log(paginationLinks);
-  // paginationLinks.addEventListener('click', function(e){
-  //   console.log('click');
-  // });
 
 };
 
