@@ -3,30 +3,7 @@
 */
 const pageDiv = document.getElementsByClassName('page')[0]; //div with class "page"
 const studentsArray = document.querySelectorAll('.student-item'); //Array of students (li)
-const studentList = document.querySelector('.student-list'); //(ul)
 const students = []; //sorted student array
-
-sortStudentList();
-printStudentList();
-pagination();
-
-studentList.parentNode.removeChild(studentList); //Hide student list
-
-//Show 10 students per "page"
-
-/* CREATE ANY ELEMENT
-*/
-//const createElement = (elementName, property, value) =>{
-// const createElement = (elementName) =>{
-//   const element = document.createElement(elementName);
-//   //element[property] = value;
-//   return element;
-// };
-
-//Append element
-// function appendElement(parent, element){
-//   parent.appendChild(element);
-// };
 
 //clean up studentList and save to students
 function sortStudentList () {
@@ -46,21 +23,36 @@ function sortStudentList () {
   };
 };
 
-//Print student in intervals of 10 depending of which page number is clicked
-function printStudentList(){
+function resetPaginationDiv(){
+  paginationDiv.parentNode.removeChild(paginationDiv);
+};
+
+function showStudents(pageNumber){
+  const studentList = document.querySelector('.student-list');
+  studentList.parentNode.removeChild(studentList); //Hide HTML list from index
+
+
+
+  //Display students
   const ul = document.createElement('ul');
-  ul.setAttribute('class', 'student-list');
+  ul.className = 'student-list';
   pageDiv.appendChild(ul);
 
-  for (let i = 0; i < students.length; i++){
-  //for (let i = 0; i < 10; i++){
+  startIndex = pageNumber*10-10;
+  if (pageNumber*10 > students.length){
+    endIndex = students.length;
+  } else {
+    endIndex = pageNumber*10;
+  };
+
+  for (let i = pageNumber*10-10; i < pageNumber*10 && i < students.length; i++){
 
     const li = document.createElement('li');
     li.className = 'student-item cf';
     ul.appendChild(li);
 
     const studentDiv = document.createElement('div');
-    studentDiv.setAttribute('class', 'student-details')
+    studentDiv.className = 'student-details';
     li.appendChild(studentDiv);
 
     const img = document.createElement('img');
@@ -85,15 +77,20 @@ function printStudentList(){
     dateSpan.className = 'date';
     dateSpan.innerHTML = students[i].joined;
     joinedDiv.appendChild(dateSpan);
+
   };
+
+  pagination(pageNumber);
+
+
 };
 
 //Pagination
-function pagination() {
+function pagination(pageNumber) {
+
   const numberOfPages = Math.ceil(studentsArray.length/10); //Rounds up to closest int
-  const paginationDiv = document.createElement('div'); //class pagination
+  paginationDiv = document.createElement('div'); //class pagination
   paginationDiv.className = 'pagination';
-  //const ul = document.createElement('ul');
   const ul = document.createElement('ul');
 
   for (let i = 1; i < numberOfPages+1; i++){
@@ -101,16 +98,31 @@ function pagination() {
     const a = document.createElement('a');
     a.href = '#';
     a.text = i;
-    if (i === 1){
+    if (i === pageNumber){
       a.className = 'active';
     }
+    a.addEventListener('click', function(){
+      resetPaginationDiv();
+      showStudents(i);
+    });
     li.appendChild(a);
     ul.appendChild(li);
   };
 
+
   paginationDiv.appendChild(ul);
   pageDiv.appendChild(paginationDiv);
+
+  // const paginationLinks = document.getElementsByTagName('a');
+  // console.log(paginationLinks);
+  // paginationLinks.addEventListener('click', function(e){
+  //   console.log('click');
+  // });
+
 };
+
+sortStudentList();
+showStudents(1);
 
 /* When a user clicks on “2” in the pagination, students 11 through 20 are shown.
 ** When a user clicks “3”, students 21 through 30 are shown. And so on. When “6”
@@ -130,3 +142,18 @@ function pagination() {
 ** the JavaScript file your write to the other lists of students we’ve provided
 ** in the student-list-examples folder.
 */
+
+
+/* CREATE ANY ELEMENT
+*/
+//const createElement = (elementName, property, value) =>{
+// const createElement = (elementName) =>{
+//   const element = document.createElement(elementName);
+//   //element[property] = value;
+//   return element;
+// };
+
+//Append element
+// function appendElement(parent, element){
+//   parent.appendChild(element);
+// };
