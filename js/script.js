@@ -8,7 +8,6 @@ let paginationDivShows = true;
 
 /* NEW CLEAN ARRAY OF STUDENTS
 ** Clean up studentsArray and save to new array called studentsArray
-** (Maybe unnessecary, but the best solution I could come up with for now)
 */
 function organizeStudentList () {
 
@@ -30,6 +29,7 @@ function organizeStudentList () {
     students.push(student);
   };
 };
+
 /* ADD SEARCHBOX TO PAGE
 ** Search for matching student names or student emails
 ** Listens to enter key press and button click
