@@ -35,7 +35,6 @@ function organizeStudentList () {
 ** Listens to enter key press and button click
 */
 function searchBox(){
-
   //Display a search div
   const div = createElementAppend('div', 'className', 'student-search', pageHeader);
   const input = createElementAppend('input', 'placeholder', 'Search for students...', div);
