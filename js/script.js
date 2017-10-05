@@ -120,12 +120,13 @@ function showStudents(pageNumber, arrayOfStudents){
   pageDiv.appendChild(studentList);
 
   //Calculate the range of students to display
-  startIndex = pageNumber*10-10;
-  if (pageNumber*10 > arrayOfStudents.length){
-    endIndex = arrayOfStudents.length;
-  } else {
-    endIndex = pageNumber*10;
-  };
+  // startIndex = pageNumber*10-10;
+  // if (pageNumber*10 > arrayOfStudents.length){
+  //   endIndex = arrayOfStudents.length;
+  // } else {
+  //   endIndex = pageNumber*10;
+  // };
+  calculateIndexRange(pageNumber, arrayOfStudents);
 
   //Print the calculated range of students to page
   for (let i = pageNumber*10-10; i < pageNumber*10 && i < arrayOfStudents.length; i++){
@@ -164,8 +165,15 @@ function showStudents(pageNumber, arrayOfStudents){
   if (arrayOfStudents.length > 9){
     pagination(pageNumber, arrayOfStudents);
   };
+};
 
-
+function calculateIndexRange(pageNumber, arrayOfStudents){
+  const startIndex = pageNumber*10-10;
+  const endIndex = pageNumber*10;
+  if (pageNumber*10 > arrayOfStudents.length){
+    const endIndex = arrayOfStudents.length;
+  };
+  return startIndex + endIndex;
 };
 
 /* PRINT PAGINATION LINKS
