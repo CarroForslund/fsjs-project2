@@ -1,7 +1,10 @@
 const pageDiv = document.getElementsByClassName('page')[0]; //div with class "page"
 const pageHeader = document.getElementsByClassName('page-header')[0];
+let studentList = document.querySelector('.student-list'); //Ul with students
 const studentsArray = document.querySelectorAll('.student-item'); //Array of students (li)
 const students = []; //organized student array
+let paginationDiv = null;
+let paginationDivShows = true;
 
 /* NEW CLEAN ARRAY OF STUDENTS
 ** Clean up studentsArray and save to new array called studentsArray
@@ -45,13 +48,7 @@ function searchBox(){
     var key = e.which || e.keyCode;
     if (key === 13) { // 13 is enter
       input.value = '';
-      //If search value is an empty string, return all students in default array
-      //Else search for matching students
-      if (value === ''){
-        showStudents(1, students);
-      } else {
-        searchStudents(value);
-      };
+      searchStudents(value);
     };
   });
   div.appendChild(input);
@@ -73,6 +70,9 @@ function searchBox(){
 ** Show result if there is at least one match, or return message if there isn't
 */
 function searchStudents(input){
+  if (paginationDivShows){
+    removePagination();
+  };
 
   //Will store matching students if there is any
   let searchResult = [];
@@ -84,21 +84,27 @@ function searchStudents(input){
     };
   };
 
-  //If there isn't a match return message
-  //Otherwise show the matching students
-  if (searchResult.length === 0){
-    const studentList = document.querySelector('.student-list');
-    studentList.parentNode.removeChild(studentList); //Hide HTML list from index
-    paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
-    const div = document.createElement('div');
-    pageDiv.appendChild(div);
-    const p = document.createElement('div');
-    p.innerHTML = "Unfortunately we couldn't find any students matching your search."
-    div.appendChild(p);
-  } else {
-    paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
+  //If there is a match return result
+  //Otherwise show a message no match was found
+  if (searchResult.length >= 1){
+
     showStudents(1, searchResult);
     searchResult = [];
+
+  } else {
+
+    studentList = document.querySelector('.student-list');
+    pageDiv.appendChild(studentList);
+    studentList.parentNode.removeChild(studentList); //Hide HTML list from index
+
+    paginationDiv = createElement('div', 'className', 'pagination');
+    pageDiv.appendChild(paginationDiv);
+    paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
+    studentList = createElement('div', 'className', 'student-list');
+    pageDiv.appendChild(studentList);
+    const p = document.createElement('p');
+    p.innerHTML = "Unfortunately we couldn't find any students matching your search."
+    studentList.appendChild(p);
   };
 };
 
@@ -107,12 +113,11 @@ function searchStudents(input){
 ** Print student list, maximum 10 students per page
 */
 function showStudents(pageNumber, arrayOfStudents){
-  const studentList = document.querySelector('.student-list');
-  studentList.parentNode.removeChild(studentList); //Hide HTML list from index
 
-  const ul = document.createElement('ul');
-  ul.className = 'student-list';
-  pageDiv.appendChild(ul);
+  pageDiv.removeChild(studentList); //Hide HTML list from index
+
+  studentList = createElement('ul', 'className', 'student-list');
+  pageDiv.appendChild(studentList);
 
   //Calculate the range of students to display
   startIndex = pageNumber*10-10;
@@ -127,7 +132,7 @@ function showStudents(pageNumber, arrayOfStudents){
 
     const li = document.createElement('li');
     li.className = 'student-item cf';
-    ul.appendChild(li);
+    studentList.appendChild(li);
 
     const studentDiv = document.createElement('div');
     studentDiv.className = 'student-details';
@@ -142,24 +147,24 @@ function showStudents(pageNumber, arrayOfStudents){
     nameH3.innerHTML = arrayOfStudents[i].name;
     studentDiv.appendChild(nameH3);
 
-    const emailSpan = document.createElement('span');
-    emailSpan.className = 'email';
+    const emailSpan = createElement('span', 'className', 'email');
     emailSpan.innerHTML = arrayOfStudents[i].email;
     studentDiv.appendChild(emailSpan);
 
-    const joinedDiv = document.createElement('div');
-    joinedDiv.className = 'joined-details';
+    const joinedDiv = createElement('div', 'className', 'joined-details');
     li.appendChild(joinedDiv);
 
-    const dateSpan = document.createElement('span');
-    dateSpan.className = 'date';
+    const dateSpan = createElement('span', 'className', 'date');
     dateSpan.innerHTML = arrayOfStudents[i].joined;
     joinedDiv.appendChild(dateSpan);
 
   };
 
-  //Add pagination to page
-  pagination(pageNumber, arrayOfStudents);
+  //Add pagination to page if there are more than 10 students in the list
+  if (arrayOfStudents.length > 9){
+    pagination(pageNumber, arrayOfStudents);
+  };
+
 
 };
 
@@ -171,10 +176,8 @@ function pagination(pageNumber, arrayOfStudents) {
 
   //Calculate how many pages are needed for the amount of students in array
   const numberOfPages = Math.ceil(arrayOfStudents.length/10); //Rounds up to closest int
+  paginationDiv = createElement('div', 'className', 'pagination');
 
-  const paginationDiv = createElement('div', 'className', 'pagination')
-  // paginationDiv = document.createElement('div'); //class pagination
-  // paginationDiv.className = 'pagination';
   const ul = document.createElement('ul');
 
   for (let i = 1; i < numberOfPages+1; i++){
@@ -195,6 +198,18 @@ function pagination(pageNumber, arrayOfStudents) {
 
   paginationDiv.appendChild(ul);
   pageDiv.appendChild(paginationDiv);
+
+  paginationDivShows = true;
+
+};
+
+function removePagination(){
+  paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
+  paginationDivShows = false;
+};
+
+function clearPage(){
+  studentList.parentNode.removeChild(studentList); //Hide HTML list from index
 
 };
 
@@ -219,8 +234,3 @@ function createElement(elementName, property, value){
   element[property] = value;
   return element;
 };
-
-//Append element
-// function appendElement(parent, element){
-//   parent.appendChild(element);
-// };
