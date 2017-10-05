@@ -36,8 +36,7 @@ function organizeStudentList () {
 ** Listens to enter key press and button click
 */
 function searchBox(){
-  const div = document.createElement('div');
-  div.className = 'student-search';
+  const div = createElement('div', 'className', 'student-search');
   pageHeader.appendChild(div);
 
   const input = document.createElement('input');
@@ -119,14 +118,8 @@ function showStudents(pageNumber, arrayOfStudents){
   studentList = createElement('ul', 'className', 'student-list');
   pageDiv.appendChild(studentList);
 
-  //Calculate the range of students to display
-  // startIndex = pageNumber*10-10;
-  // if (pageNumber*10 > arrayOfStudents.length){
-  //   endIndex = arrayOfStudents.length;
-  // } else {
-  //   endIndex = pageNumber*10;
-  // };
-  calculateIndexRange(pageNumber, arrayOfStudents);
+  //Calculate students by index to show them on the right page
+  //calculateIndexRange(pageNumber, arrayOfStudents);
 
   //Print the calculated range of students to page
   for (let i = pageNumber*10-10; i < pageNumber*10 && i < arrayOfStudents.length; i++){
@@ -167,14 +160,17 @@ function showStudents(pageNumber, arrayOfStudents){
   };
 };
 
-function calculateIndexRange(pageNumber, arrayOfStudents){
-  const startIndex = pageNumber*10-10;
-  const endIndex = pageNumber*10;
-  if (pageNumber*10 > arrayOfStudents.length){
-    const endIndex = arrayOfStudents.length;
-  };
-  return startIndex + endIndex;
-};
+/* CALCULATE STUDENTS TO SHOW ON PAGE
+** By their index number to be display on the right page
+*/
+// function calculateIndexRange(pageNumber, arrayOfStudents){
+//   const startIndex = pageNumber*10-10;
+//   const endIndex = pageNumber*10;
+//   if (pageNumber*10 > arrayOfStudents.length){
+//     const endIndex = arrayOfStudents.length;
+//   };
+//   return startIndex + endIndex;
+// };
 
 /* PRINT PAGINATION LINKS
 ** Pagination links to display at the bottom of the page
