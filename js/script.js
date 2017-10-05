@@ -30,17 +30,18 @@ function organizeStudentList () {
     students.push(student);
   };
 };
-
 /* ADD SEARCHBOX TO PAGE
 ** Search for matching student names or student emails
 ** Listens to enter key press and button click
 */
 function searchBox(){
-  const div = createElement('div', 'className', 'student-search');
-  pageHeader.appendChild(div);
 
-  const input = document.createElement('input');
-  input.placeholder = 'Search for students...';
+  //Display a search div
+  const div = createElementAppend('div', 'className', 'student-search', pageHeader);
+  const input = createElementAppend('input', 'placeholder', 'Search for students...', div);
+  const button = createElementAppend('button', 'innerHTML', 'Search', div);
+
+  //Add functionality to search field
   input.addEventListener('keypress', function (e) {
     const input = document.querySelector('input');
     const value = input.value;
@@ -50,21 +51,17 @@ function searchBox(){
       searchStudents(value);
     };
   });
-  div.appendChild(input);
 
-  const button = document.createElement('button');
-  button.innerHTML = 'Search';
+  //Add functionality to search button
   button.addEventListener('click', function(){
     const input = document.querySelector('input');
     const value = input.value;
     input.value = '';
     searchStudents(value);
   });
-  div.appendChild(button);
-
 };
 
-/* SEARCH FUNCTION
+/* SEARCH FOR STUDENTS
 ** Use input from the search box to find matching student names or student emails
 ** Show result if there is at least one match, or return message if there isn't
 */
@@ -73,154 +70,140 @@ function searchStudents(input){
     removePagination();
   };
 
-  //Will store matching students if there is any
+  //Will store matching students if there's any
   let searchResult = [];
 
-  //Loop through students to see if there is a name or email including the search input
+  //Search through students
+  //If the search input matches the name or email of a student, add student to search result
   for (let i = 0; i < students.length; i++){
     if (students[i].name.includes(input) || students[i].email.includes(input)){
       searchResult.push(students[i]);
     };
   };
 
-  //If there is a match return result
-  //Otherwise show a message no match was found
+  //If there is a match display matched students, or show message that no match was found
   if (searchResult.length >= 1){
-
     showStudents(1, searchResult);
     searchResult = [];
 
   } else {
+    pageDiv.removeChild(studentList); //Clear student list
 
-    studentList = document.querySelector('.student-list');
-    pageDiv.appendChild(studentList);
-    studentList.parentNode.removeChild(studentList); //Hide HTML list from index
-
-    paginationDiv = createElement('div', 'className', 'pagination');
-    pageDiv.appendChild(paginationDiv);
+    //Display message that no student matched the search result
+    paginationDiv = createElementAppend('div', 'className', 'pagination', pageDiv);
     paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
-    studentList = createElement('div', 'className', 'student-list');
-    pageDiv.appendChild(studentList);
-    const p = document.createElement('p');
-    p.innerHTML = "Unfortunately we couldn't find any students matching your search."
-    studentList.appendChild(p);
+    studentList = createElementAppend('div', 'className', 'student-list', pageDiv);
+    const p = createElementAppend('p', 'innerHTML', 'No students match your search.', studentList);
   };
 };
 
 /* SHOW STUDENTS ON PAGE
 ** Use chosen array of students
-** Print student list, maximum 10 students per page
+** Display student(s) in unordered list (maximum 10 students per page)
 */
 function showStudents(pageNumber, arrayOfStudents){
+  pageDiv.removeChild(studentList); //Clear current student list before displaying a new one
+  studentList = createElementAppend('ul', 'className', 'student-list', pageDiv);
 
-  pageDiv.removeChild(studentList); //Hide HTML list from index
-
-  studentList = createElement('ul', 'className', 'student-list');
-  pageDiv.appendChild(studentList);
-
-  //Calculate students by index to show them on the right page
-  //calculateIndexRange(pageNumber, arrayOfStudents);
-
-  //Print the calculated range of students to page
+  //Display each student in the array
   for (let i = pageNumber*10-10; i < pageNumber*10 && i < arrayOfStudents.length; i++){
+    const li = createElementAppend('li', 'className', 'student-item cf', studentList);
 
-    const li = document.createElement('li');
-    li.className = 'student-item cf';
-    studentList.appendChild(li);
+    //Student's details div
+    const studentDiv = createElementAppend('div', 'className', 'student-details', li);
 
-    const studentDiv = document.createElement('div');
-    studentDiv.className = 'student-details';
-    li.appendChild(studentDiv);
-
-    const img = document.createElement('img');
-    img.className = 'avatar';
+    //Student's avatar
+    const img = createElementAppend('img', 'className', 'avatar', studentDiv);
     img.src = arrayOfStudents[i].avatar;
-    studentDiv.appendChild(img);
 
-    const nameH3 = document.createElement('h3');
-    nameH3.innerHTML = arrayOfStudents[i].name;
-    studentDiv.appendChild(nameH3);
+    //Student's name
+    const nameH3 = createElementAppend('h3', 'innerHTML', arrayOfStudents[i].name, studentDiv);
 
-    const emailSpan = createElement('span', 'className', 'email');
+    //Student's email
+    const emailSpan = createElementAppend('span', 'className', 'email', studentDiv);
     emailSpan.innerHTML = arrayOfStudents[i].email;
-    studentDiv.appendChild(emailSpan);
 
-    const joinedDiv = createElement('div', 'className', 'joined-details');
-    li.appendChild(joinedDiv);
+    //Student's join details div
+    const joinedDiv = createElementAppend('div', 'className', 'joined-details', li);
 
-    const dateSpan = createElement('span', 'className', 'date');
+    //Student's join date
+    const dateSpan = createElementAppend('span', 'className', 'date', joinedDiv);
     dateSpan.innerHTML = arrayOfStudents[i].joined;
-    joinedDiv.appendChild(dateSpan);
-
   };
 
-  //Add pagination to page if there are more than 10 students in the list
+  //Add pagination if there are more than 10 students in the list
   if (arrayOfStudents.length > 9){
     pagination(pageNumber, arrayOfStudents);
   };
 };
-
-/* CALCULATE STUDENTS TO SHOW ON PAGE
-** By their index number to be display on the right page
-*/
-// function calculateIndexRange(pageNumber, arrayOfStudents){
-//   const startIndex = pageNumber*10-10;
-//   const endIndex = pageNumber*10;
-//   if (pageNumber*10 > arrayOfStudents.length){
-//     const endIndex = arrayOfStudents.length;
-//   };
-//   return startIndex + endIndex;
-// };
 
 /* PRINT PAGINATION LINKS
 ** Pagination links to display at the bottom of the page
 ** Makes it possible to navigate through the list of students if more than 10 is listed
 */
 function pagination(pageNumber, arrayOfStudents) {
-
   //Calculate how many pages are needed for the amount of students in array
   const numberOfPages = Math.ceil(arrayOfStudents.length/10); //Rounds up to closest int
-  paginationDiv = createElement('div', 'className', 'pagination');
 
+  //Set paginationDiv value
+  paginationDiv = createElementAppend('div', 'className', 'pagination', pageDiv);
+
+  //Create pagination links (ul), give current page number the class "active"
   const ul = document.createElement('ul');
+  paginationDiv.appendChild(ul);
 
   for (let i = 1; i < numberOfPages+1; i++){
     const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = '#';
+    ul.appendChild(li);
+
+    const a = createElementAppend('a', 'href', '#', li);
     a.text = i;
     if (i === pageNumber){
       a.className = 'active';
     }
     a.addEventListener('click', function(){
-      paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
+      if (paginationDivShows){
+        removePagination();
+      };
       showStudents(i, arrayOfStudents);
     });
-    li.appendChild(a);
-    ul.appendChild(li);
+
   };
-
-  paginationDiv.appendChild(ul);
-  pageDiv.appendChild(paginationDiv);
-
   paginationDivShows = true;
 
 };
 
+/* REMOVE PAGINATION FROM PAGE
+** And set paginationDivShows to false
+*/
 function removePagination(){
-  paginationDiv.parentNode.removeChild(paginationDiv); //reset pagination div
+  paginationDiv.parentNode.removeChild(paginationDiv);
   paginationDivShows = false;
 };
 
-function clearPage(){
-  studentList.parentNode.removeChild(studentList); //Hide HTML list from index
+/* CREATE ANY ELEMENT WITH A PROPERTY
+** return element
+*/
+function createElement(elementName, property, value){
+  const element = document.createElement(elementName);
+  element[property] = value;
+  return element;
+};
 
+/* CREATE ANY ELEMENT WITH A PROPERTY AND APPEND TO AN OTHER ELEMENT
+** return element
+*/
+function createElementAppend(elementName, property, value, parentNode){
+  const element = document.createElement(elementName);
+  element[property] = value;
+  parentNode.appendChild(element);
+  return element;
 };
 
 /* RUN PROGRAM FROM THIS FUNCTION
-** Create a search box
+** Show a search box
 ** Organise students
-** Show students
+** Show students on page(s)
 */
 function run(){
   searchBox();
@@ -229,12 +212,3 @@ function run(){
 };
 
 run();
-
-
-/* CREATE ANY ELEMENT WITH A PROPERTY
-*/
-function createElement(elementName, property, value){
-  const element = document.createElement(elementName);
-  element[property] = value;
-  return element;
-};
